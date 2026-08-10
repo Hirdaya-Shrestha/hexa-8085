@@ -1,69 +1,25 @@
-name: Update app info
+name: Check app info
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '0 0 * * 1'
   workflow_dispatch:
 
 jobs:
-  update-info:
+  check-info:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - run: npm install --no-save google-play-scraper
-      - name: Fetch app info and update README
+      - name: Fetch app info
         run: |
           node -e "
           const gplay = require('google-play-scraper').default;
-          const fs = require('fs');
           gplay.app({appId: 'com.ha.nep.hexa8085'}).then(result => {
-            const version = result.version;
-            const icon = result.icon;
-            const screenshots = result.screenshots || [];
-            console.log('Fetched version: ' + version);
-            console.log('Icon: ' + icon);
-            console.log('Screenshots: ' + screenshots.length);
-
-            let content = fs.readFileSync('README.md', 'utf8');
-
-            // Update version
-            content = content.replace(
-              /Latest version: \*\*.+?\*\*/,
-              'Latest version: **' + version + '**'
-            );
-
-            // Update icon
-            content = content.replace(
-              /<img src=\"[^\"]*\" alt=\"HexA8085\" width=\"96\" height=\"96\">/,
-              '<img src=\"' + icon + '\" alt=\"HexA8085\" width=\"96\" height=\"96\">'
-            );
-
-            // Update screenshots section
-            if (screenshots.length > 0) {
-              const screenshotRows = [];
-              for (let i = 0; i < screenshots.length; i += 3) {
-                const row = screenshots.slice(i, i + 3);
-                screenshotRows.push(
-                  '<p align=\"center\">\n' +
-                  row.map((url, j) => {
-                    const labels = ['Screenshot ' + (i + j + 1)];
-                    return '  <img src=\"' + url + '\" alt=\"' + labels[0] + '\" width=\"200\">';
-                  }).join('\n') +
-                  '\n</p>'
-                );
-              }
-              const screenshotBlock = screenshotRows.join('\n  <br>\n');
-              content = content.replace(
-                /## Screenshots[\s\S]*?---/,
-                '## Screenshots\n\n' + screenshotBlock + '\n\n---'
-              );
-            }
-
-            fs.writeFileSync('README.md', content);
-            console.log('README.md updated');
+            console.log('::group::App Info');
+            console.log('Version:', result.version);
+            console.log('Icon:', result.icon);
+            console.log('Screenshots:');
+            (result.screenshots || []).forEach((url, i) => console.log('  ' + (i+1) + '.', url));
+            console.log('::endgroup::');
           }).catch(console.error);
           "
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: 'chore: update app info from Play Store'
-          file_pattern: README.md
