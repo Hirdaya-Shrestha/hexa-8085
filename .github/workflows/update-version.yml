@@ -1,0 +1,38 @@
+name: Update app version
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm install --no-save google-play-scraper
+      - name: Fetch version and update README
+        run: |
+          node -e "
+          const gplay = require('google-play-scraper').default;
+          gplay.app({appId: 'com.ha.nep.hexa8085'}).then(result => {
+            const fs = require('fs');
+            const version = result.version;
+            console.log('Fetched version: ' + version);
+            let content = fs.readFileSync('README.md', 'utf8');
+            let updated = content.replace(
+              /Latest version: \*\*.+?\*\*/,
+              'Latest version: **' + version + '**'
+            );
+            if (updated !== content) {
+              fs.writeFileSync('README.md', updated);
+              console.log('README.md updated');
+            } else {
+              console.log('Version unchanged, skipping');
+            }
+          }).catch(console.error);
+          "
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'chore: update app version to latest'
+          file_pattern: README.md
