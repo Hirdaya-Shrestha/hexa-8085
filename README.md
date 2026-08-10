@@ -1,4 +1,5 @@
 <div align="center">
+  <img src="https://lh3.googleusercontent.com" alt="HexA8085" width="96" height="96">
   <h1>HexA8085</h1>
   <p><strong>A modern 8085 microprocessor simulator. Runs entirely in your browser.</strong></p>
   <p>
@@ -14,6 +15,16 @@
     <img src="https://img.shields.io/badge/Platform-Android-brightgreen" alt="Platform Android">
   </p>
 </div>
+
+---
+
+## Screenshots
+
+<p align="center">
+  <img src="https://lh3.googleusercontent.com" alt="Screenshot 1" width="200">
+  <img src="https://lh3.googleusercontent.com" alt="Screenshot 2" width="200">
+  <img src="https://lh3.googleusercontent.com" alt="Screenshot 3" width="200">
+</p>
 
 ---
 
