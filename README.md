@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://lh3.googleusercontent.com" alt="HexA8085" width="96" height="96">
+  <img src="https://play-lh.googleusercontent.com/z0SbccgtbGtGsghZWg7Psf-SrSOLFNblWci3AcgRy3V7DdOO1FXAspTZ6YWVxrhimLXY7U0mZPS6HzTAfbwafg" alt="HexA8085" width="96" height="96">
   <h1>HexA8085</h1>
   <p><strong>A modern 8085 microprocessor simulator. Runs entirely in your browser.</strong></p>
   <p>
@@ -21,9 +21,14 @@
 ## Screenshots
 
 <p align="center">
-  <img src="https://lh3.googleusercontent.com" alt="Screenshot 1" width="200">
-  <img src="https://lh3.googleusercontent.com" alt="Screenshot 2" width="200">
-  <img src="https://lh3.googleusercontent.com" alt="Screenshot 3" width="200">
+  <img src="https://play-lh.googleusercontent.com/iil0jcQWg87TwE4qWMXxj2WBPs-lRofGhn277djQ2p8VaBxJdv2i32T6xTc8o7MuvQIrHylER5zY51HEHyjkbg" alt="Screenshot 1" width="200">
+  <img src="https://play-lh.googleusercontent.com/uQgz7LH9pizca9N6KozAzr9EnMdORog5Mb8xR3JlWnWnZXhX7cDwD-eKV8V9hHkesErfx0KnQXOQTB4PEmtl8w" alt="Screenshot 2" width="200">
+  <img src="https://play-lh.googleusercontent.com/MNkVEDjFVrvLjvC5uDnFex6eo8OUPYvQ1pAh4etL58gv6EoGV6k-iLjJ1VNZfLyC177IdpVaTQJ0wmnVE72-Z8Q" alt="Screenshot 3" width="200">
+</p>
+  <br>
+<p align="center">
+  <img src="https://play-lh.googleusercontent.com/AiA7CTWsJxpxYjBE_m-sMwbdMWPRgzh1CeIiApzM7gAj-nJZdAo-xXAcpfK4pqiIHM1rGDgkMYSXDsirZtMK" alt="Screenshot 4" width="200">
+  <img src="https://play-lh.googleusercontent.com/h9f6_bgshUpgEtCI7_DJ8a9ByEVYC4sxDf4UplOU1DvnrTXYmWjL2dvepwNmhnobc81DKO8k7klgUNMIzKCrpw" alt="Screenshot 5" width="200">
 </p>
 
 ---
