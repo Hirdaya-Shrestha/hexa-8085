@@ -1,25 +1,78 @@
-name: Check app info
+name: Auto Update
 
 on:
   schedule:
-    - cron: '0 0 * * 1'
+    - cron: "0 * * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  check-info:
+  update:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
       - run: npm install --no-save google-play-scraper
-      - name: Fetch app info
+
+      - name: Fetch app info and update README
         run: |
           node -e "
           const gplay = require('google-play-scraper').default;
+          const fs = require('fs');
           gplay.app({appId: 'com.ha.nep.hexa8085'}).then(result => {
-            console.log('::group::App Info');
-            console.log('Version:', result.version);
-            console.log('Icon:', result.icon);
-            console.log('Screenshots:');
-            (result.screenshots || []).forEach((url, i) => console.log('  ' + (i+1) + '.', url));
-            console.log('::endgroup::');
+            const version = result.version;
+            const icon = result.icon;
+            const screenshots = result.screenshots || [];
+            console.log('Version:', version);
+            console.log('Icon:', icon);
+            console.log('Screenshots:', screenshots.length);
+
+            let content = fs.readFileSync('README.md', 'utf8');
+
+            content = content.replace(
+              /Latest version: \*\*.+?\*\*/,
+              'Latest version: **' + version + '**'
+            );
+
+            content = content.replace(
+              /<img src=\"[^\"]*\" alt=\"HexA8085\" width=\"96\" height=\"96\">/,
+              '<img src=\"' + icon + '\" alt=\"HexA8085\" width=\"96\" height=\"96\">'
+            );
+
+            if (screenshots.length > 0) {
+              const rows = [];
+              for (let i = 0; i < screenshots.length; i += 3) {
+                const row = screenshots.slice(i, i + 3);
+                rows.push(
+                  '<p align=\"center\">\n' +
+                  row.map((url, j) => '  <img src=\"' + url + '\" alt=\"Screenshot ' + (i + j + 1) + '\" width=\"200\">').join('\n') +
+                  '\n</p>'
+                );
+              }
+              const block = rows.join('\n  <br>\n');
+              content = content.replace(
+                /## Screenshots[\s\S]*?---/,
+                '## Screenshots\n\n' + block + '\n\n---'
+              );
+            }
+
+            fs.writeFileSync('README.md', content);
+            console.log('README.md updated');
           }).catch(console.error);
           "
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "Hirdaya-Shrestha"
+          git config user.email "hirdaya098@gmail.com"
+          git add README.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update app info from Play Store"
+            git push
+          fi
